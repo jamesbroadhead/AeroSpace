@@ -2,6 +2,7 @@ import Common
 import SwiftUI
 
 @MainActor
+@available(macOS 13.0, *)
 public func getMessageWindow(messageModel: MessageModel) -> some Scene {
     // Using SwiftUI.Window because another class in AeroSpace is already called Window
     SwiftUI.Window(messageModel.message?.title ?? aeroSpaceAppName, id: messageWindowId) {
