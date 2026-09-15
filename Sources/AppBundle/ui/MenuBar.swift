@@ -3,6 +3,7 @@ import Foundation
 import SwiftUI
 
 @MainActor
+@available(macOS 13.0, *)
 public func menuBar(viewModel: TrayMenuModel) -> some Scene { // todo should it be converted to "SwiftUI struct"?
     MenuBarExtra {
         let shortIdentification = "\(aeroSpaceAppName) v\(aeroSpaceAppVersion) \(gitShortHash)"

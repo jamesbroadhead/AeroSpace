@@ -12,12 +12,17 @@ struct AeroSpaceApp: App {
         initAppBundle()
         if #available(macOS 13, *) {} else {
             MessageWindowPresenter.shared.startObserving()
+            LegacyMenuBar.shared.start()
         }
     }
 
     var body: some Scene {
-        menuBar(viewModel: viewModel)
+        // SwiftUI.App requires at least one Scene. On macOS 12 the UI is created imperatively
+        // via NSStatusItem (LegacyMenuBar) and NSPanel (MessageWindowPresenter), so an empty
+        // Settings scene is used as a placeholder there, while MenuBarExtra shuts it out on 13+.
+        Settings { EmptyView() }
         if #available(macOS 13, *) {
+            menuBar(viewModel: viewModel)
             MessageWindowScene(messageModel: messageModel)
         }
     }
