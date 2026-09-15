@@ -11,7 +11,7 @@ extension [String] {
                     arg.doubleQuoted
                 case containsSingleQuote && containsDoubleQuote:
                     // Technically shouldn't be possible according to shell lexer & parser
-                    arg.replacing("'", with: "\\'").replacing("\"", with: "\\\"").doubleQuoted
+                    arg.replacingOccurrences(of: "'", with: "\\'").replacingOccurrences(of: "\"", with: "\\\"").doubleQuoted
                 case containsWhitespaces:
                     arg.singleQuoted
                 default:

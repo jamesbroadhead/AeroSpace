@@ -5,9 +5,9 @@ import HotKey
 import XCTest
 
 let projectRoot: URL = {
-    var url = URL(filePath: #filePath).absoluteURL
+    var url = URL(fileURLWithPath: #filePath).absoluteURL
     check(FileManager.default.fileExists(atPath: url.path))
-    while !FileManager.default.fileExists(atPath: url.appending(component: ".git").path) {
+    while !FileManager.default.fileExists(atPath: url.appendingPathComponent(".git").path) {
         url.deleteLastPathComponent()
     }
     return url

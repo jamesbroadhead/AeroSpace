@@ -10,7 +10,7 @@ struct ExecAndForgetCommand: Command {
         // It doesn't throw if exit code is non-zero
         let process = Process()
         process.environment = config.execConfig.envVariables + env.asMap
-        process.executableURL = URL(filePath: "/bin/bash")
+        process.executableURL = URL(fileURLWithPath: "/bin/bash")
         process.arguments = ["-c", args.bashScript]
         return .from(bool: Result { try process.run() }.isSuccess)
     }

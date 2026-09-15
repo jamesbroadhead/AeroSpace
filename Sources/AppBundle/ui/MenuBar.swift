@@ -91,7 +91,7 @@ public func menuBar(viewModel: TrayMenuModel) -> some Scene { // todo should it 
 func openConfigButton(showShortcutGroup: Bool = false) -> some View {
     let editor = getTextEditorToOpenConfig()
     let button = Button("Open config in '\(editor.lastPathComponent)'") {
-        let fallbackConfig: URL = FileManager.default.homeDirectoryForCurrentUser.appending(path: configDotfileName)
+        let fallbackConfig: URL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(configDotfileName)
         switch findCustomConfigUrl() {
             case .file(let url):
                 url.open(with: editor)
@@ -139,5 +139,5 @@ func shortcutGroup(label: some View, content: some View) -> some View {
 func getTextEditorToOpenConfig() -> URL {
     NSWorkspace.shared.urlForApplication(toOpen: findCustomConfigUrl().urlOrNil ?? defaultConfigUrl)?
         .takeIf { $0.lastPathComponent != "Xcode.app" } // Blacklist Xcode. It is too heavy to open plain text files
-        ?? URL(filePath: "/System/Applications/TextEdit.app")
+        ?? URL(fileURLWithPath: "/System/Applications/TextEdit.app")
 }

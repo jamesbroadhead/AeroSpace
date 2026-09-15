@@ -3,14 +3,14 @@ import Foundation
 
 let configDotfileName = ".aerospace.toml"
 func findCustomConfigUrl() -> ConfigFile {
-    let xdgConfigHome = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"].map { URL(filePath: $0) }
-        ?? FileManager.default.homeDirectoryForCurrentUser.appending(path: ".config/")
+    let xdgConfigHome = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"].map { URL(fileURLWithPath: $0) }
+        ?? FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".config/")
     let candidates: [URL] = switch serverArgs.configLocation {
-        case let configLocation?: [URL(filePath: configLocation)]
+        case let configLocation?: [URL(fileURLWithPath: configLocation)]
         case nil:
             [
-                FileManager.default.homeDirectoryForCurrentUser.appending(path: configDotfileName),
-                xdgConfigHome.appending(path: "aerospace").appending(path: "aerospace.toml"),
+                FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(configDotfileName),
+                xdgConfigHome.appendingPathComponent("aerospace").appendingPathComponent("aerospace.toml"),
             ]
     }
     let existingCandidates: [URL] = candidates.filter { (candidate: URL) in FileManager.default.fileExists(atPath: candidate.path) }

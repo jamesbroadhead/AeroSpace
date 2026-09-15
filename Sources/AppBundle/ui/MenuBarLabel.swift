@@ -91,8 +91,8 @@ struct MenuBarLabel: View {
         Group {
             Text("|")
                 .font(.system(.largeTitle))
-                .foregroundStyle(finalColor)
                 .bold()
+                .foregroundStyle(finalColor)
                 .padding(.bottom, 6)
             ForEach(otherWorkspaces, id: \.name) { item in
                 itemView(for: TrayItem(type: .workspace, name: item.name, isActive: false, hasFullscreenWindows: item.hasFullscreenWindows))
@@ -104,8 +104,8 @@ struct MenuBarLabel: View {
     private func modeSeparator(with design: Font.Design) -> some View {
         Text(":")
             .font(.system(.largeTitle, design: design))
-            .foregroundStyle(finalColor)
             .bold()
+            .foregroundStyle(finalColor)
     }
 
     @ViewBuilder

@@ -4,13 +4,13 @@ import HotKey
 import OrderedCollections
 
 func getDefaultConfigUrlFromProject() -> URL {
-    var url = URL(filePath: #filePath)
+    var url = URL(fileURLWithPath: #filePath)
     check(FileManager.default.fileExists(atPath: url.path))
-    while !FileManager.default.fileExists(atPath: url.appending(component: ".git").path) {
+    while !FileManager.default.fileExists(atPath: url.appendingPathComponent(".git").path) {
         url.deleteLastPathComponent()
     }
     let projectRoot: URL = url
-    return projectRoot.appending(component: "docs/config-examples/default-config.toml")
+    return projectRoot.appendingPathComponent("docs/config-examples/default-config.toml")
 }
 
 var defaultConfigUrl: URL {

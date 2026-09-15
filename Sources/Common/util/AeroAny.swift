@@ -30,7 +30,6 @@ extension AeroAny {
 extension Int: AeroAny {}
 extension String: AeroAny {}
 extension Character: AeroAny {}
-extension Regex: AeroAny {}
 extension Array: AeroAny {}
 extension URL: AeroAny {}
 extension CGFloat: AeroAny {}

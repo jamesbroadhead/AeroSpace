@@ -177,7 +177,7 @@ extension Workspace {
     ))
     if let exec = config.execOnWorkspaceChange.first {
         let process = Process()
-        process.executableURL = URL(filePath: exec)
+        process.executableURL = URL(fileURLWithPath: exec)
         process.arguments = Array(config.execOnWorkspaceChange.dropFirst())
         var environment = config.execConfig.envVariables
         environment[AEROSPACE_FOCUSED_WORKSPACE] = newWorkspace
