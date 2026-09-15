@@ -5,9 +5,9 @@ public struct VolumeCmdArgs: CmdArgs {
         kind: .volume,
         help: volume_help_generated,
         flags: [
-            "--no-gui": falseBoolFlag(\.gui),
+            "--no-gui": falseBoolFlag(\Self.gui),
         ],
-        posArgs: [newMandatoryPosArgParser(\.action, parseVolumeAction, placeholder: VolumeAction.argsUnion)],
+        posArgs: [newMandatoryPosArgParser(\Self.action, parseVolumeAction, placeholder: VolumeAction.argsUnion)],
     )
 
     public var gui: Bool = true

@@ -5,13 +5,13 @@ public struct ListMonitorsCmdArgs: CmdArgs {
         kind: .listMonitors,
         help: list_monitors_help_generated,
         flags: [
-            "--focused": boolFlag(\.focused),
-            "--mouse": boolFlag(\.mouse),
+            "--focused": boolFlag(\Self.focused),
+            "--mouse": boolFlag(\Self.mouse),
 
             // Formatting flags
-            "--format": formatParser(\._format, for: .monitor),
-            "--count": trueBoolFlag(\.outputOnlyCount),
-            "--json": trueBoolFlag(\.json),
+            "--format": formatParser(\Self._format, for: .monitor),
+            "--count": trueBoolFlag(\Self.outputOnlyCount),
+            "--json": trueBoolFlag(\Self.json),
         ],
         posArgs: [],
         conflictingOptions: [

@@ -5,11 +5,11 @@ public struct EvalCmdArgs: CmdArgs {
         kind: .eval,
         help: eval_help_generated,
         flags: [
-            "--stdin": ArgParser(\.commonState.explicitStdinFlag, constSubArgParserFun(true)),
+            "--stdin": ArgParser(\Self.commonState.explicitStdinFlag, constSubArgParserFun(true)),
         ],
         posArgs: [
-            dashDashArg(mandatory: false),
-            newMandatoryPosArgParser(\.shellExpr, consumeStrCliArg, placeholder: "<aerospace-shell-expr>"),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false),
+            newMandatoryPosArgParser(\Self.shellExpr, consumeStrCliArg, placeholder: "<aerospace-shell-expr>"),
         ],
         conflictingOptions: [],
     )

@@ -5,12 +5,12 @@ public struct MoveWorkspaceToMonitorCmdArgs: CmdArgs {
         kind: .moveWorkspaceToMonitor,
         help: move_workspace_to_monitor_help_generated,
         flags: [
-            "--wrap-around": trueBoolFlag(\.wrapAround),
-            "--workspace": workspaceSubArgParser(),
+            "--wrap-around": trueBoolFlag(\Self.wrapAround),
+            "--workspace": workspaceSubArgParser(keyPath: \Self.workspaceName),
         ],
         posArgs: [
-            dashDashArg(mandatory: false),
-            newMandatoryPosArgParser(\.target, parseMonitorTarget, placeholder: MonitorTarget.cases.joinedCliArgs),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false),
+            newMandatoryPosArgParser(\Self.target, parseMonitorTarget, placeholder: MonitorTarget.cases.joinedCliArgs),
         ],
     )
 

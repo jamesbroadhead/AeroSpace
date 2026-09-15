@@ -7,9 +7,9 @@ public struct ListModesCmdArgs: CmdArgs {
         kind: .listModes,
         help: list_modes_help_generated,
         flags: [
-            "--count": trueBoolFlag(\.outputOnlyCount),
-            "--current": trueBoolFlag(\.current),
-            "--json": trueBoolFlag(\.json),
+            "--count": trueBoolFlag(\Self.outputOnlyCount),
+            "--current": trueBoolFlag(\Self.current),
+            "--json": trueBoolFlag(\Self.json),
         ],
         posArgs: [],
         conflictingOptions: [

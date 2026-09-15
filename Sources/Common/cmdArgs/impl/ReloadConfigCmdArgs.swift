@@ -5,9 +5,9 @@ public struct ReloadConfigCmdArgs: CmdArgs {
         kind: .reloadConfig,
         help: reload_config_help_generated,
         flags: [
-            "--no-gui": trueBoolFlag(\.noGui),
-            "--dry-run": trueBoolFlag(\.dryRun),
-            "--warnings-as-errors": trueBoolFlag(\.warningsAsErrors),
+            "--no-gui": trueBoolFlag(\Self.noGui),
+            "--dry-run": trueBoolFlag(\Self.dryRun),
+            "--warnings-as-errors": trueBoolFlag(\Self.warningsAsErrors),
         ],
         posArgs: [],
     )

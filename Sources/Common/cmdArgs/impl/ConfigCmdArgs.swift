@@ -4,12 +4,12 @@ public struct ConfigCmdArgs: CmdArgs, Equatable {
         kind: .config,
         help: config_help_generated,
         flags: [
-            "--json": trueBoolFlag(\.json),
-            "--keys": trueBoolFlag(\.keys),
-            "--major-keys": trueBoolFlag(\.majorKeys),
-            "--all-keys": trueBoolFlag(\.allKeys),
-            "--config-path": trueBoolFlag(\.configPath),
-            "--get": singleValueSubArgParser(\.keyNameToGet, "<name>", Result.success),
+            "--json": trueBoolFlag(\Self.json),
+            "--keys": trueBoolFlag(\Self.keys),
+            "--major-keys": trueBoolFlag(\Self.majorKeys),
+            "--all-keys": trueBoolFlag(\Self.allKeys),
+            "--config-path": trueBoolFlag(\Self.configPath),
+            "--get": singleValueSubArgParser(\Self.keyNameToGet, "<name>", Result.success),
         ],
         posArgs: [],
     )

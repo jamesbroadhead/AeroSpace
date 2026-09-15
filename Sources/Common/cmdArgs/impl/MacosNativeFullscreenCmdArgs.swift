@@ -5,10 +5,10 @@ public struct MacosNativeFullscreenCmdArgs: CmdArgs {
         kind: .macosNativeFullscreen,
         help: macos_native_fullscreen_help_generated,
         flags: [
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
-            "--window-id": windowIdSubArgParser(),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
-        posArgs: [ArgParser(\.toggle, parseToggleEnum)],
+        posArgs: [ArgParser(\Self.toggle, parseToggleEnum)],
     )
 
     public var toggle: ToggleEnum = .toggle

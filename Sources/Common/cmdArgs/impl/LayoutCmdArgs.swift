@@ -5,12 +5,12 @@ public struct LayoutCmdArgs: CmdArgs {
         kind: .layout,
         help: layout_help_generated,
         flags: [
-            "--window-id": windowIdSubArgParser(),
-            "--workspace": workspaceSubArgParser(),
-            "--root": trueBoolFlag(\.root),
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
+            "--workspace": workspaceSubArgParser(keyPath: \Self.workspaceName),
+            "--root": trueBoolFlag(\Self.root),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
         ],
-        posArgs: [newMandatoryPosArgParser(\.toggleBetween, parseToggleBetween, placeholder: LayoutDescription.unionLiteral)],
+        posArgs: [newMandatoryPosArgParser(\Self.toggleBetween, parseToggleBetween, placeholder: LayoutDescription.unionLiteral)],
         conflictingOptions: [
             ["--window-id", "--workspace"],
         ],

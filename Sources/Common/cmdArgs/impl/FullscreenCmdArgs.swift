@@ -5,11 +5,11 @@ public struct FullscreenCmdArgs: CmdArgs {
         kind: .fullscreen,
         help: fullscreen_help_generated,
         flags: [
-            "--no-outer-gaps": trueBoolFlag(\.noOuterGaps),
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
-            "--window-id": windowIdSubArgParser(),
+            "--no-outer-gaps": trueBoolFlag(\Self.noOuterGaps),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
-        posArgs: [ArgParser(\.toggle, parseToggleEnum)],
+        posArgs: [ArgParser(\Self.toggle, parseToggleEnum)],
     )
 
     public var toggle: ToggleEnum = .toggle

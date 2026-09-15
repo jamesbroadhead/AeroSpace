@@ -5,11 +5,11 @@ public struct FocusMonitorCmdArgs: CmdArgs {
         kind: .focusMonitor,
         help: focus_monitor_help_generated,
         flags: [
-            "--wrap-around": trueBoolFlag(\.wrapAround),
+            "--wrap-around": trueBoolFlag(\Self.wrapAround),
         ],
         posArgs: [
-            dashDashArg(mandatory: false),
-            newMandatoryPosArgParser(\.target, parseMonitorTarget, placeholder: MonitorTarget.cases.joinedCliArgs),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false),
+            newMandatoryPosArgParser(\Self.target, parseMonitorTarget, placeholder: MonitorTarget.cases.joinedCliArgs),
         ],
     )
 

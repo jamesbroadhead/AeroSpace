@@ -5,9 +5,9 @@ public struct JoinWithCmdArgs: CmdArgs {
         kind: .joinWith,
         help: join_with_help_generated,
         flags: [
-            "--window-id": windowIdSubArgParser(),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
-        posArgs: [newMandatoryPosArgParser(\.direction, parseCardinalDirectionArg, placeholder: CardinalDirection.unionLiteral)],
+        posArgs: [newMandatoryPosArgParser(\Self.direction, parseCardinalDirectionArg, placeholder: CardinalDirection.unionLiteral)],
     )
 
     public var direction: Lateinit<CardinalDirection> = .uninitialized

@@ -9,19 +9,19 @@ public struct ListWindowsCmdArgs: CmdArgs {
         kind: .listWindows,
         help: list_windows_help_generated,
         flags: [
-            "--all": trueBoolFlag(\.allAlias),
+            "--all": trueBoolFlag(\Self.allAlias),
 
             // Filtering flags
-            "--focused": trueBoolFlag(\.filteringOptions.focused),
-            "--monitor": ArgParser(\.filteringOptions.monitors, parseMonitorIds),
-            "--workspace": ArgParser(\.filteringOptions.workspaces, parseWorkspaces),
-            "--pid": singleValueSubArgParser(\.filteringOptions.pidFilter, "<pid>") { Int32($0).toResult("Can't convert to Int32") },
-            "--app-bundle-id": singleValueSubArgParser(\.filteringOptions.appIdFilter, "<app-bundle-id>", Result.success),
+            "--focused": trueBoolFlag(\Self.filteringOptions.focused),
+            "--monitor": ArgParser(\Self.filteringOptions.monitors, parseMonitorIds),
+            "--workspace": ArgParser(\Self.filteringOptions.workspaces, parseWorkspaces),
+            "--pid": singleValueSubArgParser(\Self.filteringOptions.pidFilter, "<pid>") { Int32($0).toResult("Can't convert to Int32") },
+            "--app-bundle-id": singleValueSubArgParser(\Self.filteringOptions.appIdFilter, "<app-bundle-id>", Result.success),
 
             // Formatting flags
-            "--format": formatParser(\._format, for: .window),
-            "--count": trueBoolFlag(\.outputOnlyCount),
-            "--json": trueBoolFlag(\.json),
+            "--format": formatParser(\Self._format, for: .window),
+            "--count": trueBoolFlag(\Self.outputOnlyCount),
+            "--json": trueBoolFlag(\Self.json),
         ],
         posArgs: [],
         conflictingOptions: [

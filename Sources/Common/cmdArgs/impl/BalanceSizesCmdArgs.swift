@@ -5,7 +5,7 @@ public struct BalanceSizesCmdArgs: CmdArgs {
         kind: .balanceSizes,
         help: balance_sizes_help_generated,
         flags: [
-            "--workspace": workspaceSubArgParser(),
+            "--workspace": workspaceSubArgParser(keyPath: \Self.workspaceName),
         ],
         posArgs: [],
     )

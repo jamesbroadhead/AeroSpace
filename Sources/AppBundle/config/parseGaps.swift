@@ -82,21 +82,21 @@ struct ResolvedGaps {
     }
 }
 
-private let gapsParser: [String: any ParserProtocol<Gaps>] = [
-    "inner": Parser(\.inner, parseInner),
-    "outer": Parser(\.outer, parseOuter),
+private let gapsParser: [String: any ParserProtocol] = [
+    "inner": Parser(\Gaps.inner, parseInner),
+    "outer": Parser(\Gaps.outer, parseOuter),
 ]
 
-private let innerParser: [String: any ParserProtocol<Gaps.Inner>] = [
-    "vertical": Parser(\.vertical, parseIntDynamicValue),
-    "horizontal": Parser(\.horizontal, parseIntDynamicValue),
+private let innerParser: [String: any ParserProtocol] = [
+    "vertical": Parser(\Gaps.Inner.vertical, parseIntDynamicValue),
+    "horizontal": Parser(\Gaps.Inner.horizontal, parseIntDynamicValue),
 ]
 
-private let outerParser: [String: any ParserProtocol<Gaps.Outer>] = [
-    "left": Parser(\.left, parseIntDynamicValue),
-    "bottom": Parser(\.bottom, parseIntDynamicValue),
-    "top": Parser(\.top, parseIntDynamicValue),
-    "right": Parser(\.right, parseIntDynamicValue),
+private let outerParser: [String: any ParserProtocol] = [
+    "left": Parser(\Gaps.Outer.left, parseIntDynamicValue),
+    "bottom": Parser(\Gaps.Outer.bottom, parseIntDynamicValue),
+    "top": Parser(\Gaps.Outer.top, parseIntDynamicValue),
+    "right": Parser(\Gaps.Outer.right, parseIntDynamicValue),
 ]
 
 private func parseIntDynamicValue(_ raw: OrderedJson, _ backtrace: ConfigBacktrace, _ c: inout ConfigParserContext) -> DynamicConfigValue<Int> {

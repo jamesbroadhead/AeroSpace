@@ -4,17 +4,17 @@ public struct MoveNodeToWorkspaceCmdArgs: CmdArgs {
         kind: .moveNodeToWorkspace,
         help: move_node_to_workspace_help_generated,
         flags: [
-            "--wrap-around": ArgParser(\._wrapAround, constSubArgParserFun(true)),
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
-            "--window-id": windowIdSubArgParser(),
-            "--focus-follows-window": ArgParser(\.focusFollowsWindow, constSubArgParserFun(true)),
+            "--wrap-around": ArgParser(\Self._wrapAround, constSubArgParserFun(true)),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
+            "--focus-follows-window": ArgParser(\Self.focusFollowsWindow, constSubArgParserFun(true)),
 
-            "--stdin": ArgParser(\.commonState.explicitStdinFlag, constSubArgParserFun(true)),
-            "--no-stdin": ArgParser(\.commonState.explicitStdinFlag, constSubArgParserFun(false)),
+            "--stdin": ArgParser(\Self.commonState.explicitStdinFlag, constSubArgParserFun(true)),
+            "--no-stdin": ArgParser(\Self.commonState.explicitStdinFlag, constSubArgParserFun(false)),
         ],
         posArgs: [
-            dashDashArg(mandatory: false),
-            newMandatoryPosArgParser(\.target, parseWorkspaceTarget, placeholder: workspaceTargetPlaceholder),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false),
+            newMandatoryPosArgParser(\Self.target, parseWorkspaceTarget, placeholder: workspaceTargetPlaceholder),
         ],
         conflictingOptions: [
             ["--stdin", "--no-stdin"],

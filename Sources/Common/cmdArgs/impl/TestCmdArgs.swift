@@ -12,9 +12,9 @@ public struct TestCmdArgs: CmdArgs {
         // Alternative 4: --window-id and --workspace flags for aerospace top-level command + aerospace subcommand
         flags: [:],
         posArgs: [
-            newMandatoryPosArgParser(\.lhs, parseTestLhs, placeholder: "<lhs>"),
-            newMandatoryPosArgParser(\.infixOperator, parseTestInfixOperator, placeholder: "<operator>"),
-            newMandatoryPosArgParser(\.rhs, parseTestRhs, placeholder: "<rhs>"),
+            newMandatoryPosArgParser(\Self.lhs, parseTestLhs, placeholder: "<lhs>"),
+            newMandatoryPosArgParser(\Self.infixOperator, parseTestInfixOperator, placeholder: "<operator>"),
+            newMandatoryPosArgParser(\Self.rhs, parseTestRhs, placeholder: "<rhs>"),
         ],
     )
     public typealias ExitCodeType = ConditionalExitCode

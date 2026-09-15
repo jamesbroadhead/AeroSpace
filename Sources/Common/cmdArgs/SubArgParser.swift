@@ -1,10 +1,10 @@
 typealias SubArgParser<Root, Value> = ArgParser<SubArgParserInput, Root, Value, ()>
 
-func windowIdSubArgParser<T: CmdArgs>() -> SubArgParser<T, UInt32?> {
-    singleValueSubArgParser(\T.windowId, "<window-id>", parseUInt32)
+func windowIdSubArgParser<T: CmdArgs>(keyPath: SendableWritableKeyPath<T, UInt32?>) -> SubArgParser<T, UInt32?> {
+    singleValueSubArgParser(keyPath, "<window-id>", parseUInt32)
 }
-func workspaceSubArgParser<T: CmdArgs>() -> SubArgParser<T, WorkspaceName?> {
-    singleValueSubArgParser(\T.workspaceName, "<workspace>", WorkspaceName.parse)
+func workspaceSubArgParser<T: CmdArgs>(keyPath: SendableWritableKeyPath<T, WorkspaceName?>) -> SubArgParser<T, WorkspaceName?> {
+    singleValueSubArgParser(keyPath, "<workspace>", WorkspaceName.parse)
 }
 
 func trueBoolFlag<T>(_ keyPath: SendableWritableKeyPath<T, Bool>) -> SubArgParser<T, Bool> {

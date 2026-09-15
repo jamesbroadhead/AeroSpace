@@ -6,9 +6,9 @@ private var env: [String: String] {
     isUnitTest ? testEnv : ProcessInfo.processInfo.environment
 }
 
-private let rawExecConfigParser: [String: any ParserProtocol<RawExecConfig>] = [
-    "inherit-env-vars": Parser(\.inheritEnvVariables, parseBool),
-    "env-vars": Parser(\.overriddenVars, parseEnvVariables),
+private let rawExecConfigParser: [String: any ParserProtocol] = [
+    "inherit-env-vars": Parser(\RawExecConfig.inheritEnvVariables, parseBool),
+    "env-vars": Parser(\RawExecConfig.overriddenVars, parseEnvVariables),
 ]
 
 let defaultOverriddenEnvVars = ["PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:\(env["PATH"] ?? "")"]

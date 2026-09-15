@@ -5,11 +5,11 @@ public struct SwapCmdArgs: CmdArgs {
         kind: .swap,
         help: swap_help_generated,
         flags: [
-            "--swap-focus": trueBoolFlag(\.swapFocus),
-            "--wrap-around": trueBoolFlag(\.wrapAround),
-            "--window-id": windowIdSubArgParser(),
+            "--swap-focus": trueBoolFlag(\Self.swapFocus),
+            "--wrap-around": trueBoolFlag(\Self.wrapAround),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
-        posArgs: [newMandatoryPosArgParser(\.target, parseCardinalOrDfsDirection, placeholder: CardinalOrDfsDirection.unionLiteral)],
+        posArgs: [newMandatoryPosArgParser(\Self.target, parseCardinalOrDfsDirection, placeholder: CardinalOrDfsDirection.unionLiteral)],
     )
 
     public var target: Lateinit<CardinalOrDfsDirection> = .uninitialized

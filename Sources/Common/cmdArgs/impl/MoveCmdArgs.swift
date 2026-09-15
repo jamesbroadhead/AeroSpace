@@ -5,13 +5,13 @@ public struct MoveCmdArgs: CmdArgs {
         kind: .move,
         help: move_help_generated,
         flags: [
-            "--window-id": windowIdSubArgParser(),
-            "--boundaries": ArgParser(\.rawBoundaries, upcastArgParserFun(parseBoundaries)),
-            "--boundaries-action": ArgParser(\.rawBoundariesAction, upcastArgParserFun(parseBoundariesAction)),
-            "--fail-if-fullscreen": trueBoolFlag(\.failIfFullscreen),
-            "--fail-if-macos-native-fullscreen": trueBoolFlag(\.failIfMacosNativeFullscreen),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
+            "--boundaries": ArgParser(\Self.rawBoundaries, upcastArgParserFun(parseBoundaries)),
+            "--boundaries-action": ArgParser(\Self.rawBoundariesAction, upcastArgParserFun(parseBoundariesAction)),
+            "--fail-if-fullscreen": trueBoolFlag(\Self.failIfFullscreen),
+            "--fail-if-macos-native-fullscreen": trueBoolFlag(\Self.failIfMacosNativeFullscreen),
         ],
-        posArgs: [newMandatoryPosArgParser(\.direction, parseCardinalDirectionArg, placeholder: CardinalDirection.unionLiteral)],
+        posArgs: [newMandatoryPosArgParser(\Self.direction, parseCardinalDirectionArg, placeholder: CardinalDirection.unionLiteral)],
     )
 
     public var direction: Lateinit<CardinalDirection> = .uninitialized

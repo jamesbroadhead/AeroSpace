@@ -10,18 +10,18 @@ public struct ListWorkspacesCmdArgs: CmdArgs {
         help: list_workspaces_help_generated,
         flags: [
             // Aliases
-            "--focused": trueBoolFlag(\.focused),
-            "--all": trueBoolFlag(\.all),
+            "--focused": trueBoolFlag(\Self.focused),
+            "--all": trueBoolFlag(\Self.all),
 
             // Filtering flags
-            "--visible": boolFlag(\.filteringOptions.visible),
-            "--empty": boolFlag(\.filteringOptions.empty),
-            "--monitor": ArgParser(\.filteringOptions.onMonitors, parseMonitorIds),
+            "--visible": boolFlag(\Self.filteringOptions.visible),
+            "--empty": boolFlag(\Self.filteringOptions.empty),
+            "--monitor": ArgParser(\Self.filteringOptions.onMonitors, parseMonitorIds),
 
             // Formatting flags
-            "--format": formatParser(\._format, for: .workspace),
-            "--count": trueBoolFlag(\.outputOnlyCount),
-            "--json": trueBoolFlag(\.json),
+            "--format": formatParser(\Self._format, for: .workspace),
+            "--count": trueBoolFlag(\Self.outputOnlyCount),
+            "--json": trueBoolFlag(\Self.json),
         ],
         posArgs: [],
         conflictingOptions: [

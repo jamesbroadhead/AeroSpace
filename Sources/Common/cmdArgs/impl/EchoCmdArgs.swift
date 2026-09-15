@@ -5,12 +5,12 @@ public struct EchoCmdArgs: CmdArgs {
         kind: .echo,
         help: echo_help_generated,
         flags: [
-            "--stderr": trueBoolFlag(\.isStderr),
-            "--window-id": windowIdSubArgParser(),
+            "--stderr": trueBoolFlag(\Self.isStderr),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
         posArgs: [
-            dashDashArg(mandatory: true),
-            newMandatoryPosArgParser(\.args, consumeWholeArrayOfInterpolatedPosArgs, placeholder: "<string>"),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: true),
+            newMandatoryPosArgParser(\Self.args, consumeWholeArrayOfInterpolatedPosArgs, placeholder: "<string>"),
         ],
         conflictingOptions: [],
     )

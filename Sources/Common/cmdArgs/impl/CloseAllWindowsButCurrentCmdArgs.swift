@@ -5,7 +5,7 @@ public struct CloseAllWindowsButCurrentCmdArgs: CmdArgs {
         kind: .closeAllWindowsButCurrent,
         help: close_all_windows_but_current_help_generated,
         flags: [
-            "--quit-if-last-window": ArgParser(\.closeArgs.quitIfLastWindow, constSubArgParserFun(true)),
+            "--quit-if-last-window": ArgParser(\Self.closeArgs.quitIfLastWindow, constSubArgParserFun(true)),
         ],
         posArgs: [],
     )

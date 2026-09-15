@@ -5,8 +5,8 @@ public struct CloseCmdArgs: CmdArgs {
         kind: .close,
         help: close_help_generated,
         flags: [
-            "--quit-if-last-window": trueBoolFlag(\.quitIfLastWindow),
-            "--window-id": windowIdSubArgParser(),
+            "--quit-if-last-window": trueBoolFlag(\Self.quitIfLastWindow),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
         posArgs: [],
     )

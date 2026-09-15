@@ -5,7 +5,7 @@ public struct ModeCmdArgs: CmdArgs {
         kind: .mode,
         help: mode_help_generated,
         flags: [:],
-        posArgs: [dashDashArg(mandatory: false), newMandatoryPosArgParser(\.targetMode, consumeStrCliArg, placeholder: "<binding-mode>")],
+        posArgs: [dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false), newMandatoryPosArgParser(\Self.targetMode, consumeStrCliArg, placeholder: "<binding-mode>")],
     )
 
     public var targetMode: Lateinit<String> = .uninitialized

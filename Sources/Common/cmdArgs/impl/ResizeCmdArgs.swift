@@ -5,11 +5,11 @@ public struct ResizeCmdArgs: CmdArgs {
         kind: .resize,
         help: resize_help_generated,
         flags: [
-            "--window-id": windowIdSubArgParser(),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
         posArgs: [
-            newMandatoryPosArgParser(\.dimension, parseDimension, placeholder: "(smart|smart-opposite|width|height)"),
-            newMandatoryPosArgParser(\.units, parseUnits, placeholder: "[+|-]<number>"),
+            newMandatoryPosArgParser(\Self.dimension, parseDimension, placeholder: "(smart|smart-opposite|width|height)"),
+            newMandatoryPosArgParser(\Self.units, parseUnits, placeholder: "[+|-]<number>"),
         ],
     )
 

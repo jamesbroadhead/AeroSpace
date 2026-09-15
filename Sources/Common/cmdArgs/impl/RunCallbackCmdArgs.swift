@@ -5,11 +5,11 @@ public struct RunCallbackCmdArgs: CmdArgs {
         kind: .runCallback,
         help: run_callback_help_generated,
         flags: [
-            "--for-every-window": trueBoolFlag(\.forEveryWindow),
-            "--window-id": windowIdSubArgParser(),
+            "--for-every-window": trueBoolFlag(\Self.forEveryWindow),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
         posArgs: [
-            newMandatoryPosArgParser(\.callback, parseCallbackKind, placeholder: "<callback>"),
+            newMandatoryPosArgParser(\Self.callback, parseCallbackKind, placeholder: "<callback>"),
         ],
         conflictingOptions: [
             ["--for-every-window", "--window-id"],

@@ -67,18 +67,18 @@ enum WindowDetectedCallbackMatcher: Equatable {
     }
 }
 
-private let windowDetectedParser: [String: any ParserProtocol<WindowDetectedCallback>] = [
-    "if": Parser(\.matcher, parseMatcher),
-    "check-further-callbacks": Parser(\.checkFurtherCallbacks, parseBool),
-    "run": Parser(\.rawRun, parseShellOfCommandsForConfig),
+private let windowDetectedParser: [String: any ParserProtocol] = [
+    "if": Parser(\WindowDetectedCallback.matcher, parseMatcher),
+    "check-further-callbacks": Parser(\WindowDetectedCallback.checkFurtherCallbacks, parseBool),
+    "run": Parser(\WindowDetectedCallback.rawRun, parseShellOfCommandsForConfig),
 ]
 
-private let matcherParsers: [String: any ParserProtocol<LegacyWindowDetectedCallbackMatcher>] = [
-    "app-id": Parser(\.appId, upcast(parseString)),
-    "workspace": Parser(\.workspace, upcast(parseString)),
-    "app-name-regex-substring": Parser(\.appNameRegexSubstring, upcast(parseCasInsensitiveRegex)),
-    "window-title-regex-substring": Parser(\.windowTitleRegexSubstring, upcast(parseCasInsensitiveRegex)),
-    "during-aerospace-startup": Parser(\.duringAeroSpaceStartup, upcast(parseBool)),
+private let matcherParsers: [String: any ParserProtocol] = [
+    "app-id": Parser(\LegacyWindowDetectedCallbackMatcher.appId, upcast(parseString)),
+    "workspace": Parser(\LegacyWindowDetectedCallbackMatcher.workspace, upcast(parseString)),
+    "app-name-regex-substring": Parser(\LegacyWindowDetectedCallbackMatcher.appNameRegexSubstring, upcast(parseCasInsensitiveRegex)),
+    "window-title-regex-substring": Parser(\LegacyWindowDetectedCallbackMatcher.windowTitleRegexSubstring, upcast(parseCasInsensitiveRegex)),
+    "during-aerospace-startup": Parser(\LegacyWindowDetectedCallbackMatcher.duringAeroSpaceStartup, upcast(parseBool)),
 ]
 
 private func upcast<T>(

@@ -5,11 +5,11 @@ public struct SummonWorkspaceCmdArgs: CmdArgs {
         kind: .summonWorkspace,
         help: summon_workspace_help_generated,
         flags: [
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
         ],
         posArgs: [
-            dashDashArg(mandatory: false),
-            newMandatoryPosArgParser(\.target, parseWorkspaceName, placeholder: "<workspace>"),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false),
+            newMandatoryPosArgParser(\Self.target, parseWorkspaceName, placeholder: "<workspace>"),
         ],
     )
 

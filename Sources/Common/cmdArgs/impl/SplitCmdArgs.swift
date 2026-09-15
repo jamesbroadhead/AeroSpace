@@ -5,9 +5,9 @@ public struct SplitCmdArgs: CmdArgs {
         kind: .split,
         help: split_help_generated,
         flags: [
-            "--window-id": windowIdSubArgParser(),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
-        posArgs: [newMandatoryPosArgParser(\.arg, parseSplitArg, placeholder: SplitArg.unionLiteral)],
+        posArgs: [newMandatoryPosArgParser(\Self.arg, parseSplitArg, placeholder: SplitArg.unionLiteral)],
     )
 
     public var arg: Lateinit<SplitArg> = .uninitialized

@@ -5,11 +5,11 @@ public struct TriggerBindingCmdArgs: CmdArgs {
         kind: .triggerBinding,
         help: trigger_binding_help_generated,
         flags: [
-            "--mode": singleValueSubArgParser(\._mode, "<mode-id>", Result.success),
+            "--mode": singleValueSubArgParser(\Self._mode, "<mode-id>", Result.success),
         ],
         posArgs: [
-            dashDashArg(mandatory: false),
-            newMandatoryPosArgParser(\.binding, consumeStrCliArg, placeholder: "<binding>"),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false),
+            newMandatoryPosArgParser(\Self.binding, consumeStrCliArg, placeholder: "<binding>"),
         ],
     )
     public typealias ExitCodeType = Int32ExitCode

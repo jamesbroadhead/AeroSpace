@@ -5,16 +5,16 @@ public struct WorkspaceCmdArgs: CmdArgs {
         kind: .workspace,
         help: workspace_help_generated,
         flags: [
-            "--auto-back-and-forth": ArgParser(\._autoBackAndForth, constSubArgParserFun(true)),
-            "--wrap-around": ArgParser(\._wrapAround, constSubArgParserFun(true)),
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
+            "--auto-back-and-forth": ArgParser(\Self._autoBackAndForth, constSubArgParserFun(true)),
+            "--wrap-around": ArgParser(\Self._wrapAround, constSubArgParserFun(true)),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
 
-            "--stdin": ArgParser(\.commonState.explicitStdinFlag, constSubArgParserFun(true)),
-            "--no-stdin": ArgParser(\.commonState.explicitStdinFlag, constSubArgParserFun(false)),
+            "--stdin": ArgParser(\Self.commonState.explicitStdinFlag, constSubArgParserFun(true)),
+            "--no-stdin": ArgParser(\Self.commonState.explicitStdinFlag, constSubArgParserFun(false)),
         ],
         posArgs: [
-            dashDashArg(mandatory: false),
-            newMandatoryPosArgParser(\.target, parseWorkspaceTarget, placeholder: workspaceTargetPlaceholder),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false),
+            newMandatoryPosArgParser(\Self.target, parseWorkspaceTarget, placeholder: workspaceTargetPlaceholder),
         ],
         conflictingOptions: [
             ["--stdin", "--no-stdin"],

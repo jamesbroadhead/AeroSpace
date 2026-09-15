@@ -5,12 +5,12 @@ public struct ListAppsCmdArgs: CmdArgs {
         kind: .listApps,
         help: list_apps_help_generated,
         flags: [
-            "--macos-native-hidden": boolFlag(\.macosHidden),
+            "--macos-native-hidden": boolFlag(\Self.macosHidden),
 
             // Formatting flags
-            "--format": formatParser(\._format, for: .app),
-            "--count": trueBoolFlag(\.outputOnlyCount),
-            "--json": trueBoolFlag(\.json),
+            "--format": formatParser(\Self._format, for: .app),
+            "--count": trueBoolFlag(\Self.outputOnlyCount),
+            "--json": trueBoolFlag(\Self.json),
         ],
         posArgs: [],
         conflictingOptions: [

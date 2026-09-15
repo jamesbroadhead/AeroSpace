@@ -1,6 +1,6 @@
 public typealias SendableWritableKeyPath<Root, Value> = Sendable & WritableKeyPath<Root, Value>
 typealias ArgParserFun<Input, Value> = @Sendable (Input) -> ParsedCliArgs<Value>
-protocol ArgParserProtocol<Input, Root, Context>: Sendable {
+protocol ArgParserProtocol: Sendable {
     associatedtype Input
     associatedtype Value
     associatedtype Root
@@ -8,6 +8,37 @@ protocol ArgParserProtocol<Input, Root, Context>: Sendable {
     var context: Context { get }
     var keyPath: SendableWritableKeyPath<Root, Value> { get }
     var parse: ArgParserFun<Input, Value> { get }
+    func argPlaceholderIfMandatory() -> String?
+}
+
+extension ArgParserProtocol {
+    func argPlaceholderIfMandatory() -> String? { nil }
+
+    func transformRaw<R>(_ raw: R,
+                         _ index: inout Int,
+                         _ input: any ArgParserInput,
+                         _ errors: inout [String]) -> R
+    {
+        guard let root = raw as? Root, let input = input as? Input else {
+            return raw
+        }
+        let parsedCliArgs = parse(input)
+        index += parsedCliArgs.advanceBy
+        switch parsedCliArgs.value.getOrNil(appendErrorTo: &errors) {
+            case let value?:
+                var result = root
+                result[keyPath: keyPath] = value
+                return result as! R
+            case nil:
+                return root as! R
+        }
+    }
+}
+
+extension ArgParser {
+    func argPlaceholderIfMandatory() -> String? {
+        (context as? PosArgParserContext)?.argPlaceholderIfMandatory
+    }
 }
 struct ArgParser<Input, Root, Value, Context: Sendable>: ArgParserProtocol {
     let keyPath: SendableWritableKeyPath<Root, Value>
@@ -46,9 +77,9 @@ struct PosArgParserContext {
     let argPlaceholderIfMandatory: String?
 }
 
-func dashDashArg<Root: AeroAny>(mandatory: Bool) -> PosArgParser<Root, ()> {
+func dashDashArg<Root: AeroAny>(keyPath: SendableWritableKeyPath<Root, ()>, mandatory: Bool) -> PosArgParser<Root, ()> {
     return ArgParser(
-        \.noopKeyPath,
+        keyPath,
         { input in
             switch (input.arg, mandatory) {
                 case ("--", _): .succ((), advanceBy: 1)

@@ -62,15 +62,15 @@ extension CmdArgs {
 
 public struct CmdParser<Root>: Sendable {
     let info: CmdStaticInfo
-    let flags: [String: any ArgParserProtocol<SubArgParserInput, Root, ()>]
-    let positionalArgs: [any ArgParserProtocol<PosArgParserInput, Root, PosArgParserContext>]
+    let flags: [String: any ArgParserProtocol]
+    let positionalArgs: [any ArgParserProtocol]
     let conflictingOptions: [Set<String>]
 
     init(
         kind: CmdKind,
         help: String,
-        flags: [String: any ArgParserProtocol<SubArgParserInput, Root, ()>],
-        posArgs: [any ArgParserProtocol<PosArgParserInput, Root, PosArgParserContext>],
+        flags: [String: any ArgParserProtocol],
+        posArgs: [any ArgParserProtocol],
         conflictingOptions: [Set<String>] = [],
     ) {
         self.info = CmdStaticInfo(help: help, kind: kind)

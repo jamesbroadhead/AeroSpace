@@ -40,7 +40,7 @@ func parseSpecificCmdArgs<T: CmdArgs>(_ raw: T, _ args: StrArrSlice) -> ParsedCm
     }
 
     for arg in T.parser.positionalArgs[posArgumentParserIndex...] {
-        if let placeholder = arg.context.argPlaceholderIfMandatory {
+        if let placeholder = arg.argPlaceholderIfMandatory() {
             errors.append("Argument \(placeholder.singleQuoted) is mandatory")
         }
     }
@@ -63,17 +63,6 @@ public struct CmdParsingFailure: Sendable, Equatable {
     public init(_ msg: String, _ exitCode: Int32) {
         self.msg = msg
         self.exitCode = exitCode
-    }
-}
-
-extension ArgParserProtocol where Root: ConvenienceMutable {
-    fileprivate func transformRaw(_ raw: consuming Root, _ index: inout Int, _ input: Input, _ errors: inout [String]) -> Root {
-        let parsedCliArgs = parse(input)
-        index += parsedCliArgs.advanceBy
-        return switch parsedCliArgs.value.getOrNil(appendErrorTo: &errors) {
-            case let value?: raw.copy(keyPath, value)
-            case nil: raw
-        }
     }
 }
 

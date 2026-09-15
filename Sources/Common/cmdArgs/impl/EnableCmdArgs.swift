@@ -5,9 +5,9 @@ public struct EnableCmdArgs: CmdArgs {
         kind: .enable,
         help: enable_help_generated,
         flags: [
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
         ],
-        posArgs: [newMandatoryPosArgParser(\.targetState, parseState, placeholder: EnableCmdArgs.State.unionLiteral)],
+        posArgs: [newMandatoryPosArgParser(\Self.targetState, parseState, placeholder: EnableCmdArgs.State.unionLiteral)],
     )
     public var targetState: Lateinit<State> = .uninitialized
     public var failIfNoop: Bool = false

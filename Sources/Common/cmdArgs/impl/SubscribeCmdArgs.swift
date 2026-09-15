@@ -7,10 +7,10 @@ public struct SubscribeCmdArgs: CmdArgs {
         kind: .subscribe,
         help: subscribe_help_generated,
         flags: [
-            "--all": trueBoolFlag(\.allAlias),
-            "--no-send-initial": falseBoolFlag(\.sendInitial),
+            "--all": trueBoolFlag(\Self.allAlias),
+            "--no-send-initial": falseBoolFlag(\Self.sendInitial),
         ],
-        posArgs: [ArgParser(\.events, parseEventTypes)],
+        posArgs: [ArgParser(\Self.events, parseEventTypes)],
     )
 
     fileprivate var allAlias: Bool = false
@@ -31,7 +31,7 @@ public func parseSubscribeCmdArgs(_ args: StrArrSlice) -> ParsedCmd<SubscribeCmd
         }
 }
 
-private func parseEventTypes(_ input: ArgParserInput) -> ParsedCliArgs<Set<ServerEventType>> {
+private func parseEventTypes(_ input: PosArgParserInput) -> ParsedCliArgs<Set<ServerEventType>> {
     let args = input.nonFlagArgs()
     var events: Set<ServerEventType> = []
     var errorMsg: String? = nil

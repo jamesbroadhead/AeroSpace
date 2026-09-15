@@ -5,7 +5,7 @@ public struct DebugWindowsCmdArgs: CmdArgs {
         kind: .debugWindows,
         help: debug_windows_help_generated,
         flags: [
-            "--window-id": windowIdSubArgParser(),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
         ],
         posArgs: [],
     )

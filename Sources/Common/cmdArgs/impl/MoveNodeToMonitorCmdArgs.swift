@@ -6,15 +6,15 @@ public struct MoveNodeToMonitorCmdArgs: CmdArgs {
         help: move_node_to_monitor_help_generated,
         flags: [
             // "Own" option
-            "--wrap-around": trueBoolFlag(\.wrapAround),
+            "--wrap-around": trueBoolFlag(\Self.wrapAround),
 
-            "--window-id": windowIdSubArgParser(),
-            "--focus-follows-window": trueBoolFlag(\.focusFollowsWindow),
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
+            "--window-id": windowIdSubArgParser(keyPath: \Self.windowId),
+            "--focus-follows-window": trueBoolFlag(\Self.focusFollowsWindow),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
         ],
         posArgs: [
-            dashDashArg(mandatory: false),
-            newMandatoryPosArgParser(\.target, parseMonitorTarget, placeholder: MonitorTarget.cases.joinedCliArgs),
+            dashDashArg(keyPath: \Self.noopKeyPath, mandatory: false),
+            newMandatoryPosArgParser(\Self.target, parseMonitorTarget, placeholder: MonitorTarget.cases.joinedCliArgs),
         ],
     )
 

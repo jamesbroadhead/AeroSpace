@@ -5,9 +5,9 @@ public struct MoveMouseCmdArgs: CmdArgs {
         kind: .moveMouse,
         help: move_mouse_help_generated,
         flags: [
-            "--fail-if-noop": trueBoolFlag(\.failIfNoop),
+            "--fail-if-noop": trueBoolFlag(\Self.failIfNoop),
         ],
-        posArgs: [newMandatoryPosArgParser(\.mouseTarget, parseMouseTarget, placeholder: "<mouse-position>")],
+        posArgs: [newMandatoryPosArgParser(\Self.mouseTarget, parseMouseTarget, placeholder: "<mouse-position>")],
     )
 
     public var failIfNoop: Bool = false

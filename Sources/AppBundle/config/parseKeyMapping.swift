@@ -1,9 +1,9 @@
 import Common
 import HotKey
 
-private let keyMappingParser: [String: any ParserProtocol<KeyMapping>] = [
-    "preset": Parser(\.preset, parsePreset),
-    "key-notation-to-key-code": Parser(\.rawKeyNotationToKeyCode, parseKeyNotationToKeyCode),
+private let keyMappingParser: [String: any ParserProtocol] = [
+    "preset": Parser(\KeyMapping.preset, parsePreset),
+    "key-notation-to-key-code": Parser(\KeyMapping.rawKeyNotationToKeyCode, parseKeyNotationToKeyCode),
 ]
 
 struct KeyMapping: ConvenienceMutable, Equatable, Sendable {

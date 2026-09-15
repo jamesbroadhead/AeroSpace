@@ -1,6 +1,6 @@
 let subcommandParsers: [String: any SubCommandParserProtocol] = initSubcommands()
 
-protocol SubCommandParserProtocol<T>: Sendable {
+protocol SubCommandParserProtocol: Sendable {
     associatedtype T where T: CmdArgs
     var _parse: @Sendable (StrArrSlice) -> ParsedCmd<T> { get }
 }

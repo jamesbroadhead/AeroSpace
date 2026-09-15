@@ -77,13 +77,15 @@ struct ConfigParseDiagnostic: Error, Equatable {
 typealias ResOrConfigParseDiagnostic<T> = Result<T, ConfigParseDiagnostic>
 
 extension ParserProtocol {
-    func transformRawConfig(_ raw: S,
-                            _ value: OrderedJson,
-                            _ backtrace: ConfigBacktrace,
-                            _ c: inout ConfigParserContext) -> S
+    func transformRawConfig<R: ConvenienceMutable>(_ raw: R,
+                                                   _ value: OrderedJson,
+                                                   _ backtrace: ConfigBacktrace,
+                                                   _ c: inout ConfigParserContext) -> R
     {
-        if let value = parse(value, backtrace, &c).getOrNil(appendErrorTo: &c.errors) {
-            return raw.copy(keyPath, value)
+        if let raw = raw as? S,
+           let value = parse(value, backtrace, &c).getOrNil(appendErrorTo: &c.errors)
+        {
+            return raw.copy(keyPath, value) as! R
         }
         return raw
     }
@@ -95,7 +97,7 @@ struct ConfigParserContext {
     var warnings: [ConfigParseDiagnostic]
 }
 
-protocol ParserProtocol<S>: Sendable {
+protocol ParserProtocol: Sendable {
     associatedtype T
     associatedtype S where S: ConvenienceMutable
     var keyPath: SendableWritableKeyPath<S, T> { get }
@@ -125,42 +127,42 @@ private let persistentWorkspacesKey = "persistent-workspaces"
 // For every new config option you add, think:
 // 1. Does it make sense to have different value
 // 2. Prefer commands and commands flags over toml options if possible
-private let configParser: [String: any ParserProtocol<Config>] = [
-    configVersionConfigRootKey: Parser(\.configVersion, skipParsing(Config().configVersion)), // Parsed manually
+private let configParser: [String: any ParserProtocol] = [
+    configVersionConfigRootKey: Parser(\Config.configVersion, skipParsing(Config().configVersion)), // Parsed manually
 
-    "after-login-command": Parser(\._afterLoginCommand, parseDeprecatedAfterLoginCommand),
-    "after-startup-command": Parser(\.afterStartupCommand, parseShellOfCommandsForConfig),
+    "after-login-command": Parser(\Config._afterLoginCommand, parseDeprecatedAfterLoginCommand),
+    "after-startup-command": Parser(\Config.afterStartupCommand, parseShellOfCommandsForConfig),
 
-    "on-focus-changed": Parser(\.onFocusChanged, parseShellOfCommandsForConfig),
-    "on-mode-changed": Parser(\.onModeChanged, parseShellOfCommandsForConfig),
-    "on-focused-monitor-changed": Parser(\.onFocusedMonitorChanged, parseShellOfCommandsForConfig),
-    // "on-focused-workspace-changed": Parser(\.onFocusedWorkspaceChanged, { parseCommandOrCommands($0).toParsedConfig($1) }),
+    "on-focus-changed": Parser(\Config.onFocusChanged, parseShellOfCommandsForConfig),
+    "on-mode-changed": Parser(\Config.onModeChanged, parseShellOfCommandsForConfig),
+    "on-focused-monitor-changed": Parser(\Config.onFocusedMonitorChanged, parseShellOfCommandsForConfig),
+    // "on-focused-workspace-changed": Parser(\Config.onFocusedWorkspaceChanged, { parseCommandOrCommands($0).toParsedConfig($1) }),
 
-    "enable-normalization-flatten-containers": Parser(\.enableNormalizationFlattenContainers, parseBool),
-    "enable-normalization-opposite-orientation-for-nested-containers": Parser(\.enableNormalizationOppositeOrientationForNestedContainers, parseBool),
+    "enable-normalization-flatten-containers": Parser(\Config.enableNormalizationFlattenContainers, parseBool),
+    "enable-normalization-opposite-orientation-for-nested-containers": Parser(\Config.enableNormalizationOppositeOrientationForNestedContainers, parseBool),
 
-    "default-root-container-layout": Parser(\.defaultRootContainerLayout, parseLayout),
-    "default-root-container-orientation": Parser(\.defaultRootContainerOrientation, parseDefaultContainerOrientation),
+    "default-root-container-layout": Parser(\Config.defaultRootContainerLayout, parseLayout),
+    "default-root-container-orientation": Parser(\Config.defaultRootContainerOrientation, parseDefaultContainerOrientation),
 
-    "start-at-login": Parser(\.startAtLogin, parseBool),
-    "auto-reload-config": Parser(\.autoReloadConfig, parseBool),
-    "automatically-unhide-macos-hidden-apps": Parser(\.automaticallyUnhideMacosHiddenApps, parseBool),
-    "accordion-padding": Parser(\.accordionPadding, parseInt),
-    persistentWorkspacesKey: Parser(\.persistentWorkspaces, parsePersistentWorkspaces),
-    "exec-on-workspace-change": Parser(\.execOnWorkspaceChange, parseArrayOfStrings),
-    "exec": Parser(\.execConfig, parseExecConfig),
+    "start-at-login": Parser(\Config.startAtLogin, parseBool),
+    "auto-reload-config": Parser(\Config.autoReloadConfig, parseBool),
+    "automatically-unhide-macos-hidden-apps": Parser(\Config.automaticallyUnhideMacosHiddenApps, parseBool),
+    "accordion-padding": Parser(\Config.accordionPadding, parseInt),
+    persistentWorkspacesKey: Parser(\Config.persistentWorkspaces, parsePersistentWorkspaces),
+    "exec-on-workspace-change": Parser(\Config.execOnWorkspaceChange, parseArrayOfStrings),
+    "exec": Parser(\Config.execConfig, parseExecConfig),
 
-    keyMappingConfigRootKey: Parser(\.keyMapping, skipParsing(Config().keyMapping)), // Parsed manually
-    modeConfigRootKey: Parser(\.modes, skipParsing(Config().modes)), // Parsed manually
+    keyMappingConfigRootKey: Parser(\Config.keyMapping, skipParsing(Config().keyMapping)), // Parsed manually
+    modeConfigRootKey: Parser(\Config.modes, skipParsing(Config().modes)), // Parsed manually
 
-    "gaps": Parser(\.gaps, parseGaps),
-    "focus-follows-mouse": Parser(\.focusFollowsMouse, parseFocusFollowsMouse),
-    "workspace-to-monitor-force-assignment": Parser(\.workspaceToMonitorForceAssignment, parseWorkspaceToMonitorAssignment),
-    "on-window-detected": Parser(\.onWindowDetected, parseOnWindowDetectedArray),
+    "gaps": Parser(\Config.gaps, parseGaps),
+    "focus-follows-mouse": Parser(\Config.focusFollowsMouse, parseFocusFollowsMouse),
+    "workspace-to-monitor-force-assignment": Parser(\Config.workspaceToMonitorForceAssignment, parseWorkspaceToMonitorAssignment),
+    "on-window-detected": Parser(\Config.onWindowDetected, parseOnWindowDetectedArray),
 
     // Deprecated
-    "non-empty-workspaces-root-containers-layout-on-startup": Parser(\._nonEmptyWorkspacesRootContainersLayoutOnStartup, parseStartupRootContainerLayout),
-    "indent-for-nested-containers-with-the-same-orientation": Parser(\._indentForNestedContainersWithTheSameOrientation, parseIndentForNestedContainersWithTheSameOrientation),
+    "non-empty-workspaces-root-containers-layout-on-startup": Parser(\Config._nonEmptyWorkspacesRootContainersLayoutOnStartup, parseStartupRootContainerLayout),
+    "indent-for-nested-containers-with-the-same-orientation": Parser(\Config._indentForNestedContainersWithTheSameOrientation, parseIndentForNestedContainersWithTheSameOrientation),
 ]
 
 extension ParsedCmd {
@@ -366,7 +368,7 @@ func parseTomlArray(_ raw: OrderedJson, _ backtrace: ConfigBacktrace) -> ResOrCo
 func parseTable<T: ConvenienceMutable>(
     _ raw: OrderedJson,
     _ initial: T,
-    _ fieldsParser: [String: any ParserProtocol<T>],
+    _ fieldsParser: [String: any ParserProtocol],
     _ backtrace: ConfigBacktrace,
     _ c: inout ConfigParserContext,
 ) -> T {
@@ -473,7 +475,7 @@ enum TomlBacktraceItem: Equatable {
 extension OrderedJson.JsonDict {
     func parseTable<T: ConvenienceMutable>(
         _ initial: T,
-        _ fieldsParser: [String: any ParserProtocol<T>],
+        _ fieldsParser: [String: any ParserProtocol],
         _ backtrace: ConfigBacktrace,
         _ c: inout ConfigParserContext,
     ) -> T {
