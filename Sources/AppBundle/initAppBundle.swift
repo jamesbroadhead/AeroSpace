@@ -3,11 +3,15 @@ import Common
 import Foundation
 
 @MainActor public func initAppBundle() {
+    unsafe fatalErrorLogHandler = { FileLog.log("FATAL: \(FileLog.singleLine($0))") }
+    FileLog.log("=== AeroSpace.app starting, pid=\(myPid), macOS=\(ProcessInfo.processInfo.operatingSystemVersionString) ===")
     Task.startUnstructured {
         initTerminationHandler()
         unsafe _isCli = false
+        FileLog.log("initTerminationHandler + isCli=false done")
         initServerArgs()
         await waitForAccessibilityPermission_nonCancellable()
+        FileLog.log("axPermissionStatus=\(TrayMenuModel.shared.axPermissionStatus) after waitForAccessibilityPermission")
         if isDebug {
             await toggleReleaseServerIfDebug(.off)
             interceptTermination(SIGINT)
@@ -15,11 +19,15 @@ import Foundation
         }
 
         await bootstrapConfig_nonCancellable()
+        FileLog.log("bootstrapConfig done (default config load)")
         _ = await reloadConfig_nonCancellable()
+        FileLog.log("reloadConfig done")
 
         startUnixSocketServer()
+        FileLog.log("unix socket server started at \(socketPath)")
         GlobalObserver.initObserver()
         Workspace.garbageCollectUnusedWorkspaces() // init workspaces
+        FileLog.log("workspaces initialized")
         _ = Workspace.all.first?.focusWorkspace()
         await runHeavyCompleteRefreshSession(
             .startup,
@@ -28,10 +36,12 @@ import Foundation
             assumeCancellable: false,
             layoutWorkspaces: false,
         )
+        FileLog.log("first heavy refresh session done")
         try await runLightSession(.startup, .forceRun) {
             smartLayoutAtStartup()
             _ = await config.afterStartupCommand.run(.defaultEnv, .emptyStdin)
         }
+        FileLog.log("startup sequence finished successfully")
     }
 }
 

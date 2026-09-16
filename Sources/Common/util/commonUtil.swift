@@ -6,6 +6,10 @@ public let socketPath = "/tmp/\(aeroSpaceAppId)-\(unixUserName).sock"
 public let unixUserName = NSUserName()
 public let mainModeId = "main"
 
+/// Registered by the app to capture fatal errors into the file log.
+/// Must be thread-safe on its own (invoked from arbitrary AX callback threads).
+public nonisolated(unsafe) var fatalErrorLogHandler: ((String) -> Void)? = nil
+
 @TaskLocal
 public var refreshSessionEvent: RefreshSessionEvent? = nil
 
@@ -56,6 +60,7 @@ public func dieT<T>(
     function: String = #function,
 ) -> T {
     let message = bugPrompt(__message, isDie: true, file: file, line: line, column: column, function: function)
+    unsafe fatalErrorLogHandler?(message)
     if !isUnitTest && isServer {
         showMessageInGui(
             filenameIfConsoleApp: recursionDetectorDuringTermination

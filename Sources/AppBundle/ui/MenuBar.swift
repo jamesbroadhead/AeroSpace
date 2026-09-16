@@ -66,6 +66,7 @@ public func menuBar(viewModel: TrayMenuModel) -> some Scene { // todo should it 
                 viewModel.axPermissionStatus = .waitingWithPrompt
             }
         }
+        Button("Copy diagnostics to clipboard") { diagnosticsString().copyToClipboard() }
         Button("Quit \(aeroSpaceAppName)") {
             Task.startUnstructured {
                 terminationHandler?.beforeTermination()

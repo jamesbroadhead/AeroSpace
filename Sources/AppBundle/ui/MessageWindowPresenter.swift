@@ -29,6 +29,7 @@ public final class MessageWindowPresenter {
     }
 
     private func show() {
+        FileLog.log("MessageWindowPresenter.show(title=\(model.message?.title ?? "nil"))")
         guard panel == nil else {
             panel?.makeKeyAndOrderFront(nil)
             return
@@ -51,6 +52,7 @@ public final class MessageWindowPresenter {
     }
 
     private func hide() {
+        FileLog.log("MessageWindowPresenter.hide")
         panel?.orderOut(nil)
     }
 }

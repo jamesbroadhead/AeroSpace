@@ -18,6 +18,7 @@ public final class LegacyMenuBar {
     private init() {}
 
     public func start() {
+        FileLog.log("LegacyMenuBar.start (macOS 12 NSStatusItem fallback)")
         guard statusItem == nil else { return }
         let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         self.statusItem = statusItem
@@ -114,6 +115,9 @@ public final class LegacyMenuBar {
                 self.viewModel.axPermissionStatus = .waitingWithPrompt
             }
         }
+        addActionItem(menu, title: "Copy diagnostics to clipboard") {
+                diagnosticsString().copyToClipboard()
+            }
         addActionItem(menu, title: "Quit \(aeroSpaceAppName)", keyEquivalent: "q") {
             Task.startUnstructured {
                 terminationHandler?.beforeTermination()
@@ -183,6 +187,29 @@ public final class LegacyMenuBar {
         item.isEnabled = false
         return item
     }
+}
+
+@MainActor
+func diagnosticsString() -> String {
+    let identification = "\(aeroSpaceAppName) v\(aeroSpaceAppVersion) \(gitHash)"
+    let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
+    let arch = FileLog.machineArch()
+    let axStatus = switch TrayMenuModel.shared.axPermissionStatus {
+        case .granted: "granted"
+        case .waiting: "waiting"
+        case .waitingWithPrompt: "waitingWithPrompt"
+    }
+    let logFile = FileLog.logFileUrl.path
+    let logTail = FileLog.tail(maxLines: 100)
+    return """
+    \(identification)
+    macOS: \(osVersion) (\(arch))
+    AX permission: \(axStatus)
+    Log file: \(logFile)
+
+    Last log lines (most recent last):
+    \(logTail)
+    """
 }
 
 private final class LegacyMenuActionTarget: NSObject {

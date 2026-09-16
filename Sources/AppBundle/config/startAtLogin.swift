@@ -4,6 +4,7 @@ import ServiceManagement
 
 @MainActor
 func syncStartAtLogin() {
+    FileLog.log("syncStartAtLogin startAtLogin=\(config.startAtLogin)")
     if #available(macOS 13, *) {
         let service = SMAppService.mainApp
         switch true {
@@ -26,7 +27,7 @@ private func syncStartAtLoginViaLaunchAgent() { // pre-macOS 13 fallback: handcr
             print("'start-at-login = true' has no effect in debug builds")
             return
         }
-        let executablePath = ((try? ProcessInfo.processInfo.arguments.first.map { URL(fileURLWithPath: $0) }) ?? nil)?
+        let executablePath = (ProcessInfo.processInfo.arguments.first.map { URL(fileURLWithPath: $0) })?
             .absoluteURL.path ?? dieT("Can't get executable path")
         let plist =
             """
