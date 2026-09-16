@@ -20,6 +20,19 @@ public final class LegacyMenuBar {
     public func start() {
         FileLog.log("LegacyMenuBar.start (macOS 12 NSStatusItem fallback)")
         guard statusItem == nil else { return }
+        // Creating an NSStatusItem from App.init() crashes on macOS 12 with a
+        // CGSConnectionByID assertion (SLSRegisterConnectionNotifyProc / abort in
+        // +[NSCGSStatusItem addNavigationChangedNotificationHandler:]) because the
+        // app hasn't connected to the window server yet. Defer creation until the
+        // main run loop is processing.
+        Task { @MainActor in
+            createStatusItem()
+        }
+    }
+
+    @MainActor
+    private func createStatusItem() {
+        guard statusItem == nil else { return }
         let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         self.statusItem = statusItem
         updateStatusItem()
